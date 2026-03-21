@@ -32,13 +32,13 @@ def get_reading_and_display():
         oled.fill_rect(0, 30, 128, 8, 0)
         # print to screen
         oled.text(f'{distance} mm', 0, 30)
-
+        return distance
 
     except Exception:
         oled.fill_rect(0, 30, 128, 8, 0)
         print("Out of range / no reading")
         oled.text("No reading", 0, 30)
-
+        return -1
     oled.show()
     
 
