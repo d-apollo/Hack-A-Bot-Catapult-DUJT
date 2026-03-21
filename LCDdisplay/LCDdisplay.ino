@@ -22,7 +22,7 @@ void setup() {
 
 void loop() {
 //  int distance = readSensor();  // your sensor function wherever it is 
-  int distance = 45; 
+  int distance = 64; 
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
