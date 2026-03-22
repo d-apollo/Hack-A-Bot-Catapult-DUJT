@@ -9,8 +9,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 void setup() {
   Serial.begin(9600);
-  Wire.setSDA(16);
-  Wire.setSCL(17);
+  Wire.setSDA(20);
+  Wire.setSCL(21);
   Wire.begin();
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println("OLED failed");
@@ -21,7 +21,7 @@ void setup() {
 }
 
 void loop() {
-//  int distance = readSensor();  // your sensor function wherever it is 
+  //int distance = readSensor();  // your sensor function wherever it is 
   int distance = 64; 
   display.clearDisplay();
   display.setTextSize(2);
