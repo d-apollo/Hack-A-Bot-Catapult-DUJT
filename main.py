@@ -1,7 +1,8 @@
 from measure_and_display import get_reading_and_display
 from time import sleep
 from bigmotor import rotate_base
-
+from trigger import trigger_shot
+from slingarm import set_catapult, reset_catapult
 
 STEPS = 100
 readings = []
@@ -22,24 +23,24 @@ for _ in range(STEPS):
 # currently observing the object or not 
 prev_state = 0
 middle = []
-count = 0
+count = 1
 # offset so the array values line up with the readings
 objects.append(0)
 for i in range(STEPS-1):
     # use readings to identify if an object is being detected or not
     if abs(readings[i] - readings[i+1]) > 500: 
-        prev_state = 0 if prev_state == 1 else 1
-        if prev_state ==1:
-            # number of consecutive 1s
-            count +=1
-        elif prev_state == 0 and count != 0:
+        if prev_state == 1:
             # store the middle of the tower readings
             middle.append(count // 2)
-            count = 0
-        objects.append(prev_state)
+        # flip previous state
+        prev_state = 0 if prev_state == 1 else 1
+        count = 1
+        # tower detected at that angle
     else:
-        objects.append(prev_state)
-if count !=0:
+        count +=1
+    objects.append(prev_state)
+# edge case that object is at the end
+if prev_state == 1:
     middle.append(count // 2)
 
 obj = len(middle) -1 
@@ -67,13 +68,18 @@ while current >= 0:
             curr_choice = 'far'
 
         
-    #CALL FUNCTION 
-    #Set_Catapult(curr_choice)
-    #reset_Catapult()
+        #CALL CARAPULT
+        set_catapult(curr_choice)
+        sleep(3)
+        trigger_shot()
+        sleep(3)
+        reset_catapult()
 
-    while objects[current] == 1:
+        while current >= 0 and objects[current] == 1:           
+            current-=1
+    else:
         current-=1
-        rotate_base(False)
+
         
 
 
